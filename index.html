@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<meta name="description" content="Your personal government exam preparation tracker.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>ExamTrack</title>
+<style>
+:root{--bg:#0b1220;--panel:#121d2e;--panel2:#19263a;--text:#eef4ff;--muted:#9eacc2;--accent:#7c9cff;--green:#55d6a1;--line:#26364d;--red:#ff8585}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#111e32,#0b1220 48%);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+header{padding:24px 18px 15px;max-width:760px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#7195ff,#8b6cff);display:grid;place-items:center;font-weight:900;font-size:20px;color:white}
+h1{font-size:21px;margin:0;letter-spacing:.2px}.sub{font-size:12px;color:var(--muted);margin-top:2px}
+main{max-width:760px;margin:auto;padding:0 16px 100px}.date{color:var(--muted);font-size:13px;margin:7px 2px 15px}
+.hero{background:linear-gradient(125deg,#253b62,#1c2d4b);border:1px solid #344d75;border-radius:22px;padding:20px;margin-bottom:15px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:#789aff18;right:-55px;top:-70px}
+.hero-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1.3px;color:#bdcced}.hero h2{font-size:24px;margin:7px 0 4px}.hero p{margin:0;color:#c4d1e7;font-size:13px}
+.target{font-size:12px;background:#ffffff18;padding:7px 10px;border-radius:20px;white-space:nowrap}
+.progressline{height:9px;background:#ffffff24;border-radius:10px;margin-top:19px;overflow:hidden}.progressline span{height:100%;display:block;background:var(--green);border-radius:10px;width:0;transition:width .2s}
+.progress-meta{display:flex;justify-content:space-between;font-size:12px;color:#d1ddf0;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-bottom:15px}.stat,.card{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:15px}
+.stat .num{font-size:23px;font-weight:750;margin-top:5px}.stat .label{color:var(--muted);font-size:12px}
+.card{margin-bottom:13px}.cardhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.card h3{font-size:16px;margin:0}.muted{color:var(--muted);font-size:12px}
+.task{display:flex;align-items:center;gap:11px;padding:12px 0;border-top:1px solid var(--line)}.task:first-of-type{border-top:0}.task input{width:19px;height:19px;accent-color:var(--green);flex-shrink:0}.task .taskname{flex:1}.task small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.task.done .taskname{text-decoration:line-through;color:var(--muted)}
+nav{position:fixed;bottom:0;left:0;right:0;background:#101a2bf2;border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 5px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(15px);z-index:5}
+.navinner{width:min(760px,100%);display:flex;justify-content:space-around}.navbtn{background:none;border:0;color:var(--muted);font:inherit;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 9px}.navbtn b{font-size:19px;font-weight:500}.navbtn.active{color:var(--accent)}
+button,.btn{border:0;border-radius:11px;background:var(--accent);color:#091326;font-weight:700;padding:10px 13px;font-size:13px}.btn.secondary,button.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+input[type=text],input[type=number],input[type=date],select,textarea{width:100%;background:#0c1626;border:1px solid var(--line);border-radius:10px;color:var(--text);padding:11px;font:inherit;margin:5px 0 10px}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.pill{display:inline-block;border-radius:20px;background:#253652;color:#cbd9f5;padding:5px 9px;font-size:11px;margin:3px}
+.hidden{display:none!important}.section-title{font-size:20px;margin:12px 2px 5px}.empty{color:var(--muted);text-align:center;padding:18px}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{text-align:left;padding:10px 5px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}
+.weekday{font-weight:700;color:#dce6fa}.smallbtn{padding:6px 9px;font-size:11px}
+.notice{font-size:12px;color:var(--muted);line-height:1.5}.toast{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#eaf1ff;color:#10203b;padding:10px 15px;border-radius:12px;display:none;z-index:10}
+@media(min-width:600px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.hero h2{font-size:28px}}
+</style>
+</head>
+<body>
+<header><div class="brand"><div class="logo">E</div><div><h1>ExamTrack</h1><div class="sub">Your preparation, one day at a time</div></div></div><button class="secondary smallbtn" id="installBtn" hidden>Install</button></header>
+<main>
+<section id="home">
+<div class="date" id="todayLabel"></div>
+<div class="hero"><div class="hero-top"><div><div class="eyebrow">Daily preparation goal</div><h2>Make today count.</h2><p>Build consistency. Track your progress.</p></div><div class="target">4 hrs / day</div></div><div class="progressline"><span id="heroBar"></span></div><div class="progress-meta"><span id="heroDone">0 of 4 hours completed</span><span id="heroPct">0%</span></div></div>
+<div class="grid"><div class="stat"><div class="label">Today's tasks</div><div class="num" id="taskCount">0/6</div></div><div class="stat"><div class="label">Study time logged</div><div class="num" id="hoursCount">0h</div></div><div class="stat"><div class="label">Mock tests</div><div class="num" id="mockCount">0</div></div><div class="stat"><div class="label">Average mock score</div><div class="num" id="avgScore">—</div></div></div>
+<div class="card"><div class="cardhead"><h3>Today's study checklist</h3><span class="muted" id="checkHint">Tick as you finish</span></div><div id="tasks"></div><div class="row" style="margin-top:10px"><button class="secondary" id="resetDay">Reset today</button><button id="addTask">Add task</button></div></div>
+<div class="card"><div class="cardhead"><h3>Today's focus</h3><span class="muted">Suggested routine</span></div><div class="task"><span>📘</span><div class="taskname">Mathematics <small>60 minutes</small></div></div><div class="task"><span>🧠</span><div class="taskname">Reasoning <small>45 minutes</small></div></div><div class="task"><span>🔤</span><div class="taskname">English <small>40 minutes</small></div></div><div class="task"><span>🌍</span><div class="taskname">GK & Current Affairs <small>40 minutes</small></div></div><div class="task"><span>📍</span><div class="taskname">Odisha GK & Computer <small>25 minutes</small></div></div><div class="task"><span>📝</span><div class="taskname">PYQs / Practice <small>30 minutes</small></div></div></div>
+</section>
+<section id="schedule" class="hidden"><h2 class="section-title">Weekly schedule</h2><p class="muted">A balanced 4-hour plan for your preparation.</p><div class="card"><table><thead><tr><th>Day</th><th>Focus</th></tr></thead><tbody>
+<tr><td class="weekday">Mon</td><td>Maths · Reasoning · English · GK</td></tr><tr><td class="weekday">Tue</td><td>Maths · English · Odisha GK · Computer</td></tr><tr><td class="weekday">Wed</td><td>Maths · Reasoning · English · GK</td></tr><tr><td class="weekday">Thu</td><td>Maths · English · Odisha GK · Computer</td></tr><tr><td class="weekday">Fri</td><td>Maths · Reasoning · English · GK</td></tr><tr><td class="weekday">Sat</td><td>Mixed practice · Previous-year questions</td></tr><tr><td class="weekday">Sun</td><td>Mock test · Analysis · Weekly revision</td></tr>
+</tbody></table></div><div class="card"><h3>Daily time split</h3><p class="notice">Maths 60m · Reasoning 45m · English 40m · GK/Current Affairs 40m · Odisha GK/Computer 25m · PYQs 30m = 4 hours.</p></div></section>
+<section id="exams" class="hidden"><h2 class="section-title">Exam targets</h2><p class="muted">Keep your target exams in one place.</p><div class="card"><div id="examList"></div><div class="row"><input id="examInput" type="text" placeholder="Add an exam target"><button id="addExam" style="flex:0 0 auto">Add</button></div><p class="notice">Examples: SSC CHSL, RRB NTPC, OSSC CHSL, SSC CGL, OSSC CGL. Always check the latest official notification for eligibility and dates.</p></div></section>
+<section id="progress" class="hidden"><h2 class="section-title">Your progress</h2><div class="grid"><div class="stat"><div class="label">Tasks completed</div><div class="num" id="allTasks">0</div></div><div class="stat"><div class="label">Study hours logged</div><div class="num" id="allHours">0h</div></div></div><div class="card"><div class="cardhead"><h3>Log a mock test</h3><span class="muted">Record your score</span></div><label class="muted">Exam / test name</label><input id="mockName" type="text" placeholder="e.g. SSC CHSL mock 1"><div class="row"><div><label class="muted">Score</label><input id="mockScore" type="number" min="0" placeholder="Score"></div><div><label class="muted">Total marks</label><input id="mockTotal" type="number" min="1" placeholder="Total"></div></div><button id="saveMock">Save mock result</button><div id="mockHistory" style="margin-top:14px"></div></div><div class="card"><h3>Study hours</h3><p class="notice">Add the total time you studied today. Your data stays on this device.</p><div class="row"><input id="hoursInput" type="number" min="0" max="24" step=".25" placeholder="Hours studied"><button id="saveHours" style="flex:0 0 auto">Save</button></div></div></section>
+<section id="settings" class="hidden"><h2 class="section-title">Settings & data</h2><div class="card"><h3>About ExamTrack</h3><p class="notice">A personal study tracker for government exam preparation. Your checklist, exam targets and mock scores are saved locally in this browser on this device. They are not automatically synced to another phone.</p><button class="secondary" id="exportData">Export my data</button> <button class="secondary" id="importBtn">Import data</button><input id="importFile" type="file" accept="application/json" hidden></div><div class="card"><h3>Install on your phone</h3><p class="notice">After opening the published website in Chrome, tap the browser menu (⋮) and choose “Install app” or “Add to Home screen”.</p></div></section>
+</main>
+<nav><div class="navinner">
+<button class="navbtn active" data-page="home"><b>⌂</b>Home</button><button class="navbtn" data-page="schedule"><b>▦</b>Schedule</button><button class="navbtn" data-page="exams"><b>◎</b>Exams</button><button class="navbtn" data-page="progress"><b>↗</b>Progress</button><button class="navbtn" data-page="settings"><b>⚙</b>More</button>
+</div></nav><div class="toast" id="toast"></div>
+<script>
+const KEY='examtrack-pwa-v1';
+const defaults={tasks:[{name:'Mathematics',mins:60},{name:'Reasoning',mins:45},{name:'English',mins:40},{name:'GK & Current Affairs',mins:40},{name:'Odisha GK & Computer',mins:25},{name:'PYQs / Practice',mins:30}],exams:['SSC CHSL','RRB NTPC','OSSC CHSL','SSC CGL','OSSC CGL','RRB NTPC Graduate'],checks:{},hours:{},mocks:[]};
+let data;try{data={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){data={...defaults}}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function dayKey(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function todayChecks(){return data.checks[dayKey()]||(data.checks[dayKey()]=[])}
+function toast(s){let t=document.getElementById('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',1900)}
+function render(){
+ let checks=todayChecks(),done=checks.length,total=data.tasks.length,mins=data.tasks.reduce((s,t)=>s+t.mins,0),doneMins=data.tasks.reduce((s,t,i)=>s+(checks.includes(i)?t.mins:0),0),pct=total?Math.round(done/total*100):0;
+ document.getElementById('todayLabel').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ document.getElementById('heroBar').style.width=pct+'%';document.getElementById('heroDone').textContent=(doneMins/60).toFixed(doneMins%60?1:0)+' of 4 hours completed';document.getElementById('heroPct').textContent=pct+'%';
+ document.getElementById('taskCount').textContent=done+'/'+total;document.getElementById('hoursCount').textContent=(data.hours[dayKey()]||0)+'h';document.getElementById('mockCount').textContent=data.mocks.length;
+ let avg=data.mocks.length?Math.round(data.mocks.reduce((s,m)=>s+(m.score/m.total*100),0)/data.mocks.length)+'%':'—';document.getElementById('avgScore').textContent=avg;
+ document.getElementById('tasks').innerHTML=data.tasks.map((t,i)=>`<label class="task ${checks.includes(i)?'done':''}"><input type="checkbox" data-task="${i}" ${checks.includes(i)?'checked':''}><span class="taskname">${esc(t.name)}<small>${t.mins} minutes</small></span></label>`).join('');
+ document.getElementById('allTasks').textContent=Object.values(data.checks).reduce((s,a)=>s+a.length,0);document.getElementById('allHours').textContent=Object.values(data.hours).reduce((s,n)=>s+Number(n||0),0)+'h';
+ document.getElementById('examList').innerHTML=data.exams.map((e,i)=>`<div class="task"><span>🎯</span><span class="taskname">${esc(e)}</span><button class="secondary smallbtn" data-remove-exam="${i}">Remove</button></div>`).join('')||'<div class="empty">No exam targets yet.</div>';
+ document.getElementById('mockHistory').innerHTML=data.mocks.length?data.mocks.slice().reverse().map(m=>`<div class="task"><span>📊</span><span class="taskname">${esc(m.name)}<small>${m.score}/${m.total} · ${Math.round(m.score/m.total*100)}%</small></span></div>`).join(''):'<p class="muted">No mock results saved yet.</p>';
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.addEventListener('change',e=>{if(e.target.matches('[data-task]')){let i=+e.target.dataset.task,a=todayChecks();if(e.target.checked){if(!a.includes(i))a.push(i)}else data.checks[dayKey()]=a.filter(x=>x!==i);save()}});
+document.addEventListener('click',e=>{let r=e.target.closest('[data-remove-exam]');if(r){data.exams.splice(+r.dataset.removeExam,1);save()}});
+document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(b.dataset.page).classList.remove('hidden');document.querySelectorAll('.navbtn').forEach(x=>x.classList.toggle('active',x===b));render()}));
+document.getElementById('resetDay').onclick=()=>{data.checks[dayKey()]=[];save();toast('Today’s checklist reset')};
+document.getElementById('addTask').onclick=()=>{let n=prompt('Task name?');if(n&&n.trim()){data.tasks.push({name:n.trim(),mins:0});save()}};
+document.getElementById('addExam').onclick=()=>{let v=document.getElementById('examInput').value.trim();if(v){data.exams.push(v);document.getElementById('examInput').value='';save()}};
+document.getElementById('saveHours').onclick=()=>{let v=Number(document.getElementById('hoursInput').value);if(v>=0&&v<=24){data.hours[dayKey()]=v;save();toast('Study time saved')}};
+document.getElementById('saveMock').onclick=()=>{let n=document.getElementById('mockName').value.trim(),s=Number(document.getElementById('mockScore').value),t=Number(document.getElementById('mockTotal').value);if(!n||t<=0||s<0||s>t){toast('Enter a valid name and score');return}data.mocks.push({name:n,score:s,total:t,date:dayKey()});['mockName','mockScore','mockTotal'].forEach(id=>document.getElementById(id).value='');save();toast('Mock result saved')};
+document.getElementById('exportData').onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='examtrack-backup.json';a.click();URL.revokeObjectURL(a.href)};
+document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+document.getElementById('importFile').onchange=async e=>{try{let d=JSON.parse(await e.target.files[0].text());if(!d.tasks||!d.exams)throw 0;data={...defaults,...d};save();toast('Backup imported')}catch(_){toast('Could not import this file')}};
+let installPrompt;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;let b=document.getElementById('installBtn');b.hidden=false;b.onclick=async()=>{installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;b.hidden=true}});
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+render();
+</script>
+</body></html>
